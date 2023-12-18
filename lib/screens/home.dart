@@ -33,7 +33,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('START MANAGING YOUR FINANCES',),
+        child: Text('START MANAGING YOUR FINANCES, additional new text',),
+        
       ),
     );
   }
