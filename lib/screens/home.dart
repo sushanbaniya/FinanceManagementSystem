@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('TAP ON DRAWER FOR ACTIONS',),
+        child: Text('START MANAGING YOUR FINANCES',),
       ),
     );
   }
