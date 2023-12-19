@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../screens/about.dart';
+
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,6 +14,18 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         children: [
           SizedBox(height: 200),
+           ListTile(
+            leading: Icon(FontAwesomeIcons.home, color: Colors.white,)
+            // CircleAvatar(child: Icon(Icons.attach_money, color: Colors.black),)
+             ,
+            title: Text(
+              'HOME',
+              style: Theme.of(context).textTheme.bodyMedium,
+              
+            ),
+            onTap: () {},
+          ),
+          SizedBox(height: 30),
           ListTile(
             leading: Icon(FontAwesomeIcons.moneyBillTransfer, color: Colors.white,)
             // CircleAvatar(child: Icon(Icons.attach_money, color: Colors.black),)
@@ -69,7 +83,9 @@ class MyDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(About.routeName);
+            },
           ),
           SizedBox(height: 30),
         ],
