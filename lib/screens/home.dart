@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/my_drawer.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
-      drawer: Drawer(),
+      drawer: MyDrawer(),
       appBar: AppBar(
         title: Column(
           children: [
@@ -33,7 +35,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('START MANAGING YOUR FINANCES, additional new text',),
+        child: Text('START MANAGING YOUR FINANCES',),
         
       ),
     );
