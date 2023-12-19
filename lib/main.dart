@@ -27,7 +27,7 @@ class MyAppState extends State<MyApp> {
           bodyMedium: TextStyle(
             color: Colors.white,
             fontSize: 18,
-            letterSpacing: 3,
+            letterSpacing: 6,
             fontFamily: GoogleFonts.abel().fontFamily,
           ),
         ),

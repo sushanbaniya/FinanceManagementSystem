@@ -4,7 +4,7 @@ import '../widgets/my_drawer.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home-page';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,13 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('START MANAGING YOUR FINANCES',),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('MANAGE YOUR FINANCES', ),
+            Text('BY TAPPING ON DRAWER',),
+          ],
+        ),
         
       ),
     );

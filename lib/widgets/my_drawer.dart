@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/about.dart';
+import '../screens/home.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -23,7 +24,9 @@ class MyDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(HomePage.routeName);
+            },
           ),
           SizedBox(height: 30),
           ListTile(
