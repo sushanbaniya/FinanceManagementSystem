@@ -30,7 +30,7 @@ class TaxScreenState extends State<TaxScreen> {
     } else if (incomeAmount > 5000000) {
       taxAmount = 0.39 * incomeAmount;
     }
-    setState((){});
+    setState(() {});
     print(incomeAmount);
     print(taxAmount);
   }
@@ -53,15 +53,15 @@ class TaxScreenState extends State<TaxScreen> {
               key: formKey,
               child: Container(
                 // color: Colors.white,
-                child: TextFormField(  
-                           
+                child: TextFormField(
                     textAlign: TextAlign.center,
                     cursorColor: Colors.pink,
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      
+                        fillColor: Colors.white,
                         hintText: 'ENTER YEARLY INCOME',
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color:Colors.pink, width: 4)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.pink, width: 4)),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.pink,
@@ -92,20 +92,23 @@ class TaxScreenState extends State<TaxScreen> {
               child: Text('CALCULATE TAX !'),
               onPressed: () {
                 // calculation();
-      
+
                 formKey.currentState!.save();
                 taxCalculation();
               },
             ),
             SizedBox(height: 50),
-            Container(
-              decoration: BoxDecoration(color: Colors.pink, border: Border.all(color: Colors.black, width: 2,),),  
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(2),
-              child: taxAmount == null ? Text('') : Text(
-                'Tax Amount for Rs. $income is Rs. $taxAmount', style: TextStyle(color: Colors.black, fontSize: 40,),
-              ),
-            ),
+            taxAmount == null
+                ? Text('')
+                : Container(
+                  margin: EdgeInsets.all(18),
+                  child: Text(
+                      'Tax Amount for Rs. $income is Rs. $taxAmount',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                ),
           ],
         ),
       ),
