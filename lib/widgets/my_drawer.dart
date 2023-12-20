@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../screens/about.dart';
 import '../screens/home.dart';
 import '../screens/tax_screen.dart';
+import '../screens/interest_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -77,7 +78,9 @@ class MyDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(InterestScreen.routeName);
+            },
           ),
           SizedBox(height: 30),
           ListTile(

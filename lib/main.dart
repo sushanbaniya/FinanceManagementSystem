@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './screens/home.dart';
 import './screens/about.dart';
 import './screens/tax_screen.dart';
+import './screens/interest_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,6 +38,7 @@ class MyAppState extends State<MyApp> {
         HomePage.routeName: (context) => HomePage(),
         About.routeName: (context) => About(),
         TaxScreen.routeName: (context) => TaxScreen(),
+        InterestScreen.routeName: (context) => InterestScreen(),
       },
     );
   }
