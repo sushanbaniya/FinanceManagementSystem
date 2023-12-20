@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/about.dart';
 import '../screens/home.dart';
+import '../screens/tax_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class MyDrawer extends StatelessWidget {
               
             ),
             onTap: () {
-              Navigator.of(context).pushNamed(HomePage.routeName);
+              Navigator.of(context).pushReplacementNamed(HomePage.routeName);
             },
           ),
           SizedBox(height: 30),
@@ -62,7 +63,9 @@ class MyDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(TaxScreen.routeName);
+            },
           ),
           SizedBox(height: 30),
           ListTile(
@@ -87,7 +90,7 @@ class MyDrawer extends StatelessWidget {
               
             ),
             onTap: () {
-              Navigator.of(context).pushNamed(About.routeName);
+              Navigator.of(context).pushReplacementNamed(About.routeName);
             },
           ),
           SizedBox(height: 30),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import './screens/home.dart';
 import './screens/about.dart';
+import './screens/tax_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,13 +29,14 @@ class MyAppState extends State<MyApp> {
             color: Colors.white,
             fontSize: 18,
             letterSpacing: 6,
-            fontFamily: GoogleFonts.abel().fontFamily,
+            fontFamily: GoogleFonts.adventPro().fontFamily,
           ),
         ),
       ),
       routes: {
         HomePage.routeName: (context) => HomePage(),
         About.routeName: (context) => About(),
+        TaxScreen.routeName: (context) => TaxScreen(),
       },
     );
   }
