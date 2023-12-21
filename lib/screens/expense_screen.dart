@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../widgets/my_drawer.dart';
+import '../models/expense_model.dart';
 
 class ExpenseScreen extends StatefulWidget {
   static const routeName = '/expense-screen';
@@ -13,6 +14,19 @@ class ExpenseScreen extends StatefulWidget {
 class ExpenseScreenState extends State<ExpenseScreen> {
   var title;
   var price;
+  var expensesList = [];
+  final expenseForm = GlobalKey<FormState>();
+
+  void addExpense(var Rtitle, var Rprice) {
+    // print(Rtitle);
+
+    setState(() {
+      expensesList.add(ExpenseModel(
+          id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice));
+    });
+
+    // print(expensesList[0].title);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +37,16 @@ class ExpenseScreenState extends State<ExpenseScreen> {
         toolbarHeight: 120,
         title: Text('EXPENSES'),
       ),
+      body: Column(
+          children: expensesList.map((item) {
+        return Card(
+          margin: EdgeInsets.all(18),
+            child: ListTile(
+              leading: CircleAvatar(child: Icon(FontAwesomeIcons.dollarSign),),
+          title: Text(item.title.toUpperCase()),
+          subtitle: Text('Rs.${item.price}'),
+        ));
+      }).toList()),
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.add),
         backgroundColor: Theme.of(context).primaryColorDark,
@@ -40,6 +64,7 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                 margin: EdgeInsets.all(20),
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: Form(
+                  key: expenseForm,
                   child: Column(
                     children: [
                       TextFormField(
@@ -95,6 +120,7 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                               ),
                             )),
                         textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.number,
                         onSaved: (newValue) {
                           price = newValue;
                         },
@@ -103,9 +129,15 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                         height: 30,
                       ),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColorDark),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).primaryColorDark),
                         child: Text('Add This Expense !'),
-                        onPressed: () {},
+                        onPressed: () {
+                          expenseForm.currentState!.save();
+                          addExpense(title, price);
+                          Navigator.of(context).pop();
+                        },
                       )
                     ],
                   ),
