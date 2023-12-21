@@ -5,6 +5,7 @@ import './screens/home.dart';
 import './screens/about.dart';
 import './screens/tax_screen.dart';
 import './screens/interest_screen.dart';
+import './screens/expense_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,6 +40,7 @@ class MyAppState extends State<MyApp> {
         About.routeName: (context) => About(),
         TaxScreen.routeName: (context) => TaxScreen(),
         InterestScreen.routeName: (context) => InterestScreen(),
+        ExpenseScreen.routeName: (context) => ExpenseScreen(),
       },
     );
   }
