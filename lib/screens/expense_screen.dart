@@ -21,40 +21,76 @@ class ExpenseScreenState extends State<ExpenseScreen> {
   var expensesList = [];
   final expenseForm = GlobalKey<FormState>();
 
-  void addExpense(var Rtitle, var Rprice) {
+  void addExpense (var Rtitle, var Rprice) async {
     // print(Rtitle);
 
-    setState(
-      () {
-        expensesList.add(
-          ExpenseModel(
-              id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice),
-        );
-      },
-    );
+    // setState(
+    //   () {
+    //     expensesList.add(
+    //       ExpenseModel(
+    //           id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice),
+    //     );
+    //   },
+    // );
 
     //adding to dabase
 
-    // var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
-    // http.post(Uri.parse(url), body: 
-    //   json.encode({
-    //     'id': DateTime.now().toString(),
-    //   'title': Rtitle,
-    //   'price': Rprice,
-    //   })
-      
-    //  );
-
-    var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
-    http.post(Uri.parse(url), body: json.encode({
-      'id': DateTime.now().toString(),
-      'title': Rtitle,
-      'price': Rprice,
-    }));
+    var url =
+        'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
+    await http.post(
+      Uri.parse(url),
+      body: json.encode(
+        {
+          'id': DateTime.now().toString(),
+          'title': Rtitle,
+          'price': Rprice,
+        },
+      ),
+    );
 
     
+    setState(() {
+      fetchData();
+    });
 
     // print(expensesList[0].title);
+  }
+
+  // void fetchData() async {
+  //   var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
+  //   var response = await http.get(Uri.parse(url),);
+  //   final extractedData = json.decode(response.body) as Map<String, dynamic>;
+  //   // print(data);
+  //   var extractedExpenses = [];
+  //   extractedData.forEach((expensesId, expensesValue) {
+  //     extractedExpenses.add(
+  //       ExpenseModel(
+  //         id: DateTime.now().toString(),
+  //         Rtitle: expensesValue['title'],
+  //         Rprice: expensesValue['price']
+  //       )
+  //      );
+  //   });
+  //   setState((){
+  //     expensesList = extractedExpenses;
+  //   });
+  // }
+
+  void fetchData() async {
+    var url =
+        'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
+    var response = await http.get(Uri.parse(url));
+    var extractedData = json.decode(response.body) as Map<String, dynamic>;
+    var extractedExpenses = [];
+    extractedData.forEach((expensesId, expensesValue) {
+      extractedExpenses.add(ExpenseModel(
+          id: DateTime.now().toString(),
+          Rtitle: expensesValue['title'],
+          Rprice: expensesValue['price']));
+    });
+    setState(() {
+      expensesList = extractedExpenses;
+    });
   }
 
   @override
@@ -62,26 +98,67 @@ class ExpenseScreenState extends State<ExpenseScreen> {
     return Scaffold(
       drawer: MyDrawer(),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorLight,
-        toolbarHeight: 120,
-        title: Text('EXPENSES'),
+          backgroundColor: Theme.of(context).primaryColorLight,
+          toolbarHeight: 120,
+          title: Text('EXPENSES'),
+          actions: [
+            IconButton(
+                icon: Icon(FontAwesomeIcons.refresh),
+                onPressed: () {
+                  fetchData();
+                })
+          ]),
+      body: SingleChildScrollView(
+        child: Column(
+          children: expensesList.isEmpty
+              ? [
+                  Container(
+                    margin: EdgeInsets.all(30),
+                    child: Text(
+                      'TAP ADD ICON AT BOTTOM TO ADD EXPENSES',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.all(18),
+                    child: Text(
+                      'OR',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.all(30),
+                    child: Text(
+                      'TAP REFRESH ICON AT TOP TO VIEW MOST RECENT EXPENSES',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                ]
+              : expensesList.map(
+                  (item) {
+                    return Card(
+                      margin: EdgeInsets.all(18),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(FontAwesomeIcons.dollarSign),
+                        ),
+                        title: Text(item.title.toUpperCase()),
+                        subtitle: Text('Rs.${item.price}'),
+                      ),
+                    );
+                  },
+                ).toList(),
+        ),
       ),
-      body: Column(
-        children: expensesList.map(
-          (item) {
-            return Card(
-              margin: EdgeInsets.all(18),
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Icon(FontAwesomeIcons.dollarSign),
-                ),
-                title: Text(item.title.toUpperCase()),
-                subtitle: Text('Rs.${item.price}'),
-              ),
-            );
-          },
-        ).toList(),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.add),
         backgroundColor: Theme.of(context).primaryColorDark,
