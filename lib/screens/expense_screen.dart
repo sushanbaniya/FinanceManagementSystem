@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/my_drawer.dart';
 import '../models/expense_model.dart';
@@ -12,6 +15,7 @@ class ExpenseScreen extends StatefulWidget {
 }
 
 class ExpenseScreenState extends State<ExpenseScreen> {
+  var id;
   var title;
   var price;
   var expensesList = [];
@@ -20,10 +24,35 @@ class ExpenseScreenState extends State<ExpenseScreen> {
   void addExpense(var Rtitle, var Rprice) {
     // print(Rtitle);
 
-    setState(() {
-      expensesList.add(ExpenseModel(
-          id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice));
-    });
+    setState(
+      () {
+        expensesList.add(
+          ExpenseModel(
+              id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice),
+        );
+      },
+    );
+
+    //adding to dabase
+
+    // var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
+    // http.post(Uri.parse(url), body: 
+    //   json.encode({
+    //     'id': DateTime.now().toString(),
+    //   'title': Rtitle,
+    //   'price': Rprice,
+    //   })
+      
+    //  );
+
+    var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
+    http.post(Uri.parse(url), body: json.encode({
+      'id': DateTime.now().toString(),
+      'title': Rtitle,
+      'price': Rprice,
+    }));
+
+    
 
     // print(expensesList[0].title);
   }
@@ -38,15 +67,21 @@ class ExpenseScreenState extends State<ExpenseScreen> {
         title: Text('EXPENSES'),
       ),
       body: Column(
-          children: expensesList.map((item) {
-        return Card(
-          margin: EdgeInsets.all(18),
-            child: ListTile(
-              leading: CircleAvatar(child: Icon(FontAwesomeIcons.dollarSign),),
-          title: Text(item.title.toUpperCase()),
-          subtitle: Text('Rs.${item.price}'),
-        ));
-      }).toList()),
+        children: expensesList.map(
+          (item) {
+            return Card(
+              margin: EdgeInsets.all(18),
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Icon(FontAwesomeIcons.dollarSign),
+                ),
+                title: Text(item.title.toUpperCase()),
+                subtitle: Text('Rs.${item.price}'),
+              ),
+            );
+          },
+        ).toList(),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.add),
         backgroundColor: Theme.of(context).primaryColorDark,
@@ -71,24 +106,25 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                         textAlign: TextAlign.center,
                         cursorColor: Theme.of(context).primaryColorLight,
                         decoration: InputDecoration(
-                            hintText: 'ENTER TITLE OF EXPENSE',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                borderSide: BorderSide(
-                                  width: 5,
-                                  color: Theme.of(context).primaryColorDark,
-                                )),
-                            focusedBorder: OutlineInputBorder(
+                          hintText: 'ENTER TITLE OF EXPENSE',
+                          border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                               borderSide: BorderSide(
                                 width: 5,
-                                color: Theme.of(context).primaryColorLight,
-                              ),
-                            )),
+                                color: Theme.of(context).primaryColorDark,
+                              )),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(
+                              width: 5,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                          ),
+                        ),
                         textInputAction: TextInputAction.next,
                         onSaved: (newValue) {
                           title = newValue;
@@ -101,24 +137,25 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                         textAlign: TextAlign.center,
                         cursorColor: Theme.of(context).primaryColorLight,
                         decoration: InputDecoration(
-                            hintText: 'ENTER PRICE OF EXPENSE',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                                borderSide: BorderSide(
-                                  width: 5,
-                                  color: Theme.of(context).primaryColorDark,
-                                )),
-                            focusedBorder: OutlineInputBorder(
+                          hintText: 'ENTER PRICE OF EXPENSE',
+                          border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                               borderSide: BorderSide(
                                 width: 5,
-                                color: Theme.of(context).primaryColorLight,
-                              ),
-                            )),
+                                color: Theme.of(context).primaryColorDark,
+                              )),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(
+                              width: 5,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                          ),
+                        ),
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         onSaved: (newValue) {
