@@ -21,7 +21,7 @@ class ExpenseScreenState extends State<ExpenseScreen> {
   var expensesList = [];
   final expenseForm = GlobalKey<FormState>();
 
-  void addExpense (var Rtitle, var Rprice) async {
+  void addExpense(var Rtitle, var Rprice) async {
     // print(Rtitle);
 
     // setState(
@@ -48,7 +48,6 @@ class ExpenseScreenState extends State<ExpenseScreen> {
       ),
     );
 
-    
     setState(() {
       fetchData();
     });
@@ -82,15 +81,22 @@ class ExpenseScreenState extends State<ExpenseScreen> {
     var response = await http.get(Uri.parse(url));
     var extractedData = json.decode(response.body) as Map<String, dynamic>;
     var extractedExpenses = [];
-    extractedData.forEach((expensesId, expensesValue) {
-      extractedExpenses.add(ExpenseModel(
-          id: DateTime.now().toString(),
-          Rtitle: expensesValue['title'],
-          Rprice: expensesValue['price']));
-    });
-    setState(() {
-      expensesList = extractedExpenses;
-    });
+    extractedData.forEach(
+      (expensesId, expensesValue) {
+        extractedExpenses.add(
+          ExpenseModel(
+            id: DateTime.now().toString(),
+            Rtitle: expensesValue['title'],
+            Rprice: expensesValue['price'],
+          ),
+        );
+      },
+    );
+    setState(
+      () {
+        expensesList = extractedExpenses;
+      },
+    );
   }
 
   @override

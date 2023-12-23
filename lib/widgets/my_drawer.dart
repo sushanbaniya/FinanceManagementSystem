@@ -6,6 +6,7 @@ import '../screens/home.dart';
 import '../screens/tax_screen.dart';
 import '../screens/interest_screen.dart';
 import '../screens/expense_screen.dart';
+import '../screens/income_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -55,7 +56,9 @@ class MyDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(IncomeScreen.routeName);
+            },
           ),
           SizedBox(height: 30),
           ListTile(
