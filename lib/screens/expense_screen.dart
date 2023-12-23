@@ -154,7 +154,8 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                       margin: EdgeInsets.all(18),
                       child: ListTile(
                         leading: CircleAvatar(
-                          child: Icon(FontAwesomeIcons.dollarSign),
+                          // child: Icon(Icons.money_off),
+                          child: Icon(FontAwesomeIcons.dollarSign)
                         ),
                         title: Text(item.title.toUpperCase()),
                         subtitle: Text('-Rs.${item.price}'),

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/my_drawer.dart';
 import '../models/income_model.dart';
@@ -17,15 +20,47 @@ class IncomeScreenState extends State<IncomeScreen> {
   var incomeAmount;
   var incomeList = [];
 
-  void addIncome(var incomeSource, var incomeAmount) {
-    setState(() {
-      incomeList.add(
+  void addIncome(var incomeSource, var incomeAmount) async {
+    // setState(() {
+    //   incomeList.add(
+    //     IncomeModel(
+    //       rId: DateTime.now().toString(),
+    //       rIncomeSource: incomeSource,
+    //       rIncomeAmount: incomeAmount,
+    //     ),
+    //   );
+    // });
+
+    var url =
+        'https://financemanagementsystem17-default-rtdb.firebaseio.com/incomes.json';
+    await http.post(Uri.parse(url),
+        body: json.encode({
+          'id': DateTime.now().toString(),
+          'incomeSource': incomeSource,
+          'incomeAmount': incomeAmount,
+        }));
+
+        fetchIncome();
+  }
+
+  void fetchIncome() async {
+    // print(1 + 2);
+    var url =
+        'https://financemanagementsystem17-default-rtdb.firebaseio.com/incomes.json';
+    var response = await http.get(Uri.parse(url));
+    var extractedData = json.decode(response.body);
+    var extractedIncomes = [];
+    extractedData.forEach((incomeId, incomeData) {
+      extractedIncomes.add(
         IncomeModel(
           rId: DateTime.now().toString(),
-          rIncomeSource: incomeSource,
-          rIncomeAmount: incomeAmount,
+          rIncomeSource: incomeData['incomeSource'],
+          rIncomeAmount: incomeData['incomeAmount'],
         ),
       );
+      setState(() {
+        incomeList = extractedIncomes;
+      });
     });
   }
 
@@ -40,22 +75,62 @@ class IncomeScreenState extends State<IncomeScreen> {
         actions: [
           IconButton(
             icon: Icon(FontAwesomeIcons.refresh),
-            onPressed: () {},
+            onPressed: () {
+              fetchIncome();
+            },
           ),
         ],
       ),
-      body: Column(
-        children: incomeList.map((income) {
-          return Container(
-            color: Colors.black,
-            child: Column(
-              children: [
-                Text('${income.incomeSource}'),
-                Text('${income.incomeAmount}'),
-              ],
-            ),
-          );
-        }).toList(),
+      body: SingleChildScrollView(
+        child: Column(
+            children: incomeList.isEmpty
+                ? [
+                    Container(
+                      margin: EdgeInsets.all(18),
+                      child: Text(
+                        'TAP ADD ICON AT BOTTOM TO ADD INCOMES',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                    ),
+                    // SizedBox(height: 10),
+                    Container(
+                      margin: EdgeInsets.all(18),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                    ),
+                    // SizedBox(height: 10),
+                    Container(
+                      margin: EdgeInsets.all(18),
+                      child: Text(
+                        'TAP REFRESH ICON AT TOP TO VIEW MOST RECENT INCOMES',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ]
+                : incomeList.map((income) {
+                    return Card(
+                      margin: EdgeInsets.all(18),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                            child: Icon(
+                          FontAwesomeIcons.handHoldingDollar,
+                        )),
+                        title: Text(income.incomeSource.toUpperCase()),
+                        subtitle: Text(
+                          '+Rs.${income.incomeAmount}',
+                        ),
+                      ),
+                    );
+                  }).toList()),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorDark,
@@ -138,11 +213,30 @@ class IncomeScreenState extends State<IncomeScreen> {
                         onPressed: () {
                           incomeForm.currentState!.save();
                           addIncome(incomeSource, incomeAmount);
+                          
                           Navigator.of(context).pop();
                           // print(incomeSource);
                           // print(incomeAmount);
                         },
                       ),
+
+                      // Icon(FontAwesomeIcons.filterCircleDollar)
+
+                      ///////
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: Theme.of(context).primaryColorDark,
+                      //   ),
+                      //   child: Text('temporary fetch !'),
+                      //   onPressed: () {
+
+                      //     fetchIncome();
+                      //     Navigator.of(context).pop();
+                      //     // print(incomeSource);
+                      //     // print(incomeAmount);
+                      //   },
+                      // ),
+                      ///////
                     ],
                   ),
                 ),
