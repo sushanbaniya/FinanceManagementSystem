@@ -157,7 +157,7 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                           child: Icon(FontAwesomeIcons.dollarSign),
                         ),
                         title: Text(item.title.toUpperCase()),
-                        subtitle: Text('Rs.${item.price}'),
+                        subtitle: Text('-Rs.${item.price}'),
                       ),
                     );
                   },
