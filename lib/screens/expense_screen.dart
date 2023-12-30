@@ -18,21 +18,11 @@ class ExpenseScreenState extends State<ExpenseScreen> {
   var id;
   var title;
   var price;
-  var expensesList = [];
+  List<ExpenseModel> expensesList = [];
   final expenseForm = GlobalKey<FormState>();
+  var priceList = [];
 
   void addExpense(var Rtitle, var Rprice) async {
-    // print(Rtitle);
-
-    // setState(
-    //   () {
-    //     expensesList.add(
-    //       ExpenseModel(
-    //           id: DateTime.now().toString(), Rtitle: Rtitle, Rprice: Rprice),
-    //     );
-    //   },
-    // );
-
     //adding to dabase
 
     var url =
@@ -51,56 +41,82 @@ class ExpenseScreenState extends State<ExpenseScreen> {
     setState(() {
       fetchData();
     });
-
-    // print(expensesList[0].title);
   }
 
-  // void fetchData() async {
-  //   var url = 'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
-  //   var response = await http.get(Uri.parse(url),);
-  //   final extractedData = json.decode(response.body) as Map<String, dynamic>;
-  //   // print(data);
-  //   var extractedExpenses = [];
-  //   extractedData.forEach((expensesId, expensesValue) {
-  //     extractedExpenses.add(
-  //       ExpenseModel(
-  //         id: DateTime.now().toString(),
-  //         Rtitle: expensesValue['title'],
-  //         Rprice: expensesValue['price']
-  //       )
-  //      );
-  //   });
-  //   setState((){
-  //     expensesList = extractedExpenses;
-  //   });
-  // }
-
-
 // the sorting algorithm will be applied in fetch function
-
 
   void fetchData() async {
     var url =
         'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
     var response = await http.get(Uri.parse(url));
     var extractedData = json.decode(response.body) as Map<String, dynamic>;
-    var extractedExpenses = [];
+    List<ExpenseModel> extractedExpenses = [];
+
     extractedData.forEach(
       (expensesId, expensesValue) {
         extractedExpenses.add(
           ExpenseModel(
             id: DateTime.now().toString(),
             Rtitle: expensesValue['title'],
-            Rprice: expensesValue['price'],
+            Rprice: int.parse(expensesValue['price']),
           ),
         );
       },
     );
-    setState(
-      () {
-        expensesList = extractedExpenses;
-      },
-    );
+
+    //wrap this one line of code around setState
+
+    expensesList = extractedExpenses;
+
+    //this conversion code added
+
+    //one line added
+    quickSort(expensesList, 0, expensesList.length - 1);
+
+    setState(() {});
+
+    //this print for print line after this added
+
+    print("Sorted Expenses Prices:");
+    for (var expense in expensesList) {
+      print(expense.price);
+    }
+  }
+
+  void quickSort(List<ExpenseModel> arr, int low, int high) {
+    if (low < high) {
+      int pivotIndex = partition(arr, low, high);
+      quickSort(arr, low, pivotIndex - 1);
+      quickSort(arr, pivotIndex + 1, high);
+    }
+  }
+
+  int partition(List<ExpenseModel> arr, int low, int high) {
+    int pivot = arr[low].price;
+    int p = low + 1;
+    int q = high;
+
+    while (p <= q) {
+      while (p <= (arr.length - 1) && arr[p].price <= pivot) {
+        p++;
+      }
+
+      while (q >= 0 && arr[q].price > pivot) {
+        q--;
+      }
+
+      if (p < q) {
+        ExpenseModel temp = arr[p];
+        arr[p] = arr[q];
+        arr[q] = temp;
+      }
+    }
+
+    ExpenseModel temp = arr[low];
+    arr[low] = arr[q];
+    arr[q] = temp;
+
+    return q;
   }
 
   @override
@@ -158,9 +174,8 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                       margin: EdgeInsets.all(18),
                       child: ListTile(
                         leading: CircleAvatar(
-                          // child: Icon(Icons.money_off),
-                          child: Icon(FontAwesomeIcons.dollarSign)
-                        ),
+                            // child: Icon(Icons.money_off),
+                            child: Icon(FontAwesomeIcons.dollarSign)),
                         title: Text(item.title.toUpperCase()),
                         subtitle: Text('-Rs.${item.price}'),
                       ),

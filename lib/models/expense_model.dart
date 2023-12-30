@@ -1,13 +1,16 @@
 class ExpenseModel {
   var id;
   var title;
-  var price;
+  int price = 0;
 
-  ExpenseModel({var id , var Rtitle, var Rprice}) {
-    id = DateTime.now().toString();
-    title = Rtitle;
-    price = Rprice;
+  ExpenseModel({ var id ,  var Rtitle, required int Rprice}) {
+    this.id = DateTime.now().toString();
+    this.title = Rtitle;
+    this.price = Rprice;
     
     // print(title + price + id);
   }
+
+ 
+
 }
