@@ -75,6 +75,10 @@ class ExpenseScreenState extends State<ExpenseScreen> {
   //   });
   // }
 
+
+// the sorting algorithm will be applied in fetch function
+
+
   void fetchData() async {
     var url =
         'https://financemanagementsystem17-default-rtdb.firebaseio.com/expenses.json';
