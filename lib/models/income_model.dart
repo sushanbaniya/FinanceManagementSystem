@@ -1,11 +1,11 @@
 class IncomeModel {
   var id;
   var incomeSource;
-  var incomeAmount;
+  int incomeAmount = 0;
 
-  IncomeModel({var rId, var rIncomeSource, var rIncomeAmount}) {
-    id = rId;
-    incomeSource = rIncomeSource;
-    incomeAmount = rIncomeAmount;
+  IncomeModel({var rId, var rIncomeSource, required int rIncomeAmount}) {
+    this.id = rId;
+    this.incomeSource = rIncomeSource;
+    this.incomeAmount = rIncomeAmount;
   }
 }

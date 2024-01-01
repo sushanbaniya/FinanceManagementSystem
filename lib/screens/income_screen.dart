@@ -18,7 +18,7 @@ class IncomeScreenState extends State<IncomeScreen> {
   var incomeForm = GlobalKey<FormState>();
   var incomeSource;
   var incomeAmount;
-  var incomeList = [];
+  List<IncomeModel> incomeList = [];
 
   void addIncome(var incomeSource, var incomeAmount) async {
     // setState(() {
@@ -49,19 +49,60 @@ class IncomeScreenState extends State<IncomeScreen> {
         'https://financemanagementsystem17-default-rtdb.firebaseio.com/incomes.json';
     var response = await http.get(Uri.parse(url));
     var extractedData = json.decode(response.body);
-    var extractedIncomes = [];
+    List<IncomeModel> extractedIncomes = [];
     extractedData.forEach((incomeId, incomeData) {
       extractedIncomes.add(
         IncomeModel(
           rId: DateTime.now().toString(),
           rIncomeSource: incomeData['incomeSource'],
-          rIncomeAmount: incomeData['incomeAmount'],
+          rIncomeAmount: int.parse(incomeData['incomeAmount']),
         ),
       );
-      setState(() {
+      
+      
         incomeList = extractedIncomes;
-      });
+
+        quicksort(incomeList, 0, incomeList.length - 1);
+
+        setState((){});
+      
     });
+  }
+
+  void quicksort(List<IncomeModel> arr, int low, int high) {
+    if(low < high) {
+      int pivotIndex = partition(arr, low, high);
+
+      quicksort(arr, low, pivotIndex - 1);
+
+      quicksort(arr, pivotIndex + 1, high);
+    }
+
+  }
+
+  int partition(List<IncomeModel> arr, int low, int high) {
+    int pivot = arr[low].incomeAmount;
+    int p = low + 1;
+    int q = high;
+
+    while(p <= q){
+      while(p <= arr.length - 1 && arr[p].incomeAmount <= pivot) {
+        p++;
+      }
+      while(q >= 0 && arr[q].incomeAmount > pivot) {
+        q--;
+      }
+      if(p < q) {
+        IncomeModel temp = arr[p];
+        arr[p] = arr[q];
+        arr[q] = temp;
+      }
+    }
+    IncomeModel temp = arr[low];
+    arr[low] = arr[q];
+    arr[q] = temp;
+
+    return q;
   }
 
   @override
