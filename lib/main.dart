@@ -47,3 +47,6 @@ class MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+//version of the code before building apk file
